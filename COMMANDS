@@ -1,0 +1,12 @@
+> List all connections
+ss | less
+# xxx
+
+> Filter out tcp,udp or unix connections
+ss -t
+# http://www.binarytides.com/linux-ss-command/
+
+> List all upd connections
+ss -a -A udp
+
+---end---
