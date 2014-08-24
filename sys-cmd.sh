@@ -1,3 +1,4 @@
+#!/bin/bash
 
 # resources
 # http://stackoverflow.com/questions/1562666/bash-scripts-whiptail-file-select
@@ -13,28 +14,29 @@ r_end="^[\s]*"
 i=0
 line=1
 
+
 while read -r; do
 
-#get first line and check if is a title
+    #get first line and check if is a title
     if [[ $REPLY =~ $r_title ]]; then
         title=${BASH_REMATCH[1]}
         cmd=""
         comment=""
 
-#get second (next) line and check if is a optional comment
+    #get second (next) line and check if is a optional comment
     elif [[ $REPLY =~ $r_comment ]]; then
         comment=${BASH_REMATCH[1]}
 
-# get next line and save cmd
+    # get next line and save cmd
     elif [[ $REPLY =~ $r_cmd ]]; then
         cmd=$REPLY
         cmd_line=$line
 
-# if empty line process all row
+    # if empty line process all row
     elif [[ $REPLY =~ $r_end ]]; then
 
         if [ ! -z "$title" ] && [ ! -z "$cmd" ]; then
-#            printf "%s: %s >>>> %s\n" "$cmd_line" "$title" "$cmd"
+            # printf "%s: %s >>>> %s\n" "$cmd_line" "$title" "$cmd"
             commands[i]="$cmd_line"
             commands[i+1]="$title"
             ((i+=2))
@@ -55,11 +57,12 @@ SELECT_CMD=$(whiptail --backtitle "AoJ cmds db" --title "Linux administration co
 
 COMMAND=$(sed "${SELECT_CMD}q;d" COMMANDS)
 
-
+key=""
 for arg in "$@"
 do
   case "${arg}" in
     -q*|--quiet*)           key="-q";     QUIET=1;;
+    -d*|--debug*)           key="-d";     DEBUG=1;;
     -p*|--print*)           key="-s";     PRINT=1;;
   esac
 done
@@ -67,12 +70,18 @@ done
 
 # eval command
 if [ -z "$PRINT" ]; then
+    char_line=$(printf '_%.0s' {1..100})
+    echo -e "\e[92m${char_line}\e[39m"
     eval $COMMAND
 fi
 
 # print info and command
-if [ -z "$QUIET" ]; then
+if [ "$DEBUG" = 1 ]; then
     echo ""
     echo -e "\e[40mcmd from line ${SELECT_CMD}: USE IT:  \e[92msed '${SELECT_CMD}q;d' COMMANDS\e[39m\e[49m"
+fi
+
+# print info and command
+if [ -z "$QUIET" ]; then
     echo -e "\e[40m\e[1m\e[93m$COMMAND \e[39m\e[21m\e[49m"
 fi

@@ -1,12 +1,67 @@
-> List all connections
-ss | less
-# xxx
+> sys - print user UID and GID
+id
 
-> Filter out tcp,udp or unix connections
-ss -t
+
+> sys - logged users
+who
+
+
+> sys - os info
+uname -a
+
+
+> network - all listen
+netstat --listening --programs
+
+
+> network - display kernel routing
+netstat --route
+
+
+> network - list tcp connections
+ss -lp -A tcp
 # http://www.binarytides.com/linux-ss-command/
 
-> List all upd connections
+
+> network - list established connections
+ss -tn -o
+# http://www.binarytides.com/linux-ss-command/
+
+
+> network - list unix connections
+ss -A unix
+# http://www.binarytides.com/linux-ss-command/
+
+
+> network - list udp connections
 ss -a -A udp
+# http://www.binarytides.com/linux-ss-command/
+
+
+> network - show listen summary
+ss -s
+# http://www.binarytides.com/linux-ss-command/
+
+
+> network tools - IPTraf
+sudo iptraf
+# apt-get install iptraf
+
+
+> network tools - IoTop (active process)
+sudo iotop --only
+# apt-get install iotop
+
+
+> disk - list disks
+df -h | grep ^/dev
+
+
+> disk - list storage blocks (partitions)
+lsblk
+
+
+> disk - list block devices
+sudo blkid
 
 ---end---
