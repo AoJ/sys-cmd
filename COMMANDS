@@ -64,4 +64,7 @@ lsblk
 > disk - list block devices
 sudo blkid
 
+> number lines of coffee script npm module
+find . -name '*.coffee' | grep -v /test | grep -v /node_modules | xargs wc -l`
+
 ---end---
